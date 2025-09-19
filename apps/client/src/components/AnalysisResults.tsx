@@ -1,3 +1,4 @@
+import { CopyIcon } from "@/icons/CopyIcon";
 import { Badge, Zap } from "lucide-react";
 
 // Interface for the structure of each code issue
@@ -121,9 +122,22 @@ const AnalysisResults = ({ issues, refactoredCode }: AnalysisResultsProps) => {
             {/* Display Refactored Code if available */}
             {refactoredCode && (
               <div className="mt-6 pt-4 border-t-2 border-black">
-                <p className="text-sm font-medium mb-3 text-[#2a2a2b] flex items-center gap-2">
-                  <Zap className="h-4 w-4" />
-                  Refactored Version:
+                <p className="text-sm font-medium mb-3 text-[#2a2a2b] flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Zap className="h-4 w-4" aria-hidden="true" />
+                    <span>Refactored Version:</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(refactoredCode);
+                    }} // your function to copy text
+                    className="p-1 rounded-md cursor-pointer hover:bg-gray-200"
+                    aria-label="Copy code"
+                  >
+                    <CopyIcon aria-hidden="true" />
+                  </button>
                 </p>
                 <div className="bg-white border-2 border-black rounded-lg p-4 overflow-hidden">
                   <pre className="font-mono text-xs text-[#2a2a2b] whitespace-pre-wrap break-words overflow-wrap-anywhere leading-relaxed">
