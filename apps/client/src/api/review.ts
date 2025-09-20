@@ -47,11 +47,11 @@ export const sendReview = async (
       refactoredCode: data.refactoredCode || data.parsed?.refactoredCode || ""
     };
 
-    console.log("📊 Processed result:", result);
+    console.log("Processed result:", result);
     
     return result;
   } catch (error) {
-    console.error("❌ API Error:", error);
+    console.error("API Error:", error);
     throw error;
   }
 };

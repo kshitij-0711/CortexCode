@@ -1,35 +1,36 @@
-import { useState } from "react";
-import Editor from "@monaco-editor/react";
-import { Button } from "./ui/button";
-import { Code, Zap } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import { sendReview } from "@/api/review";
-import AnalysisResults from "./AnalysisResults";
+// CodeEditor.tsx
+import Editor from "@monaco-editor/react"; 
+import { Button } from "./ui/button"; 
+import { Code, Zap } from "lucide-react"; 
+import { useMutation } from "@tanstack/react-query"; 
+import { sendReview } from "@/api/review"; 
+import { useCodeStore } from "@/store/codeStore"; 
+import AnalysisResults from "./AnalysisResults"; 
 
 const CodeEditor = () => {
-  const { mutate, isPending, data } = useMutation({
-    mutationFn: sendReview,
+  // Get state + actions from Zustand
+  const { code, setCode, setAnalysis } = useCodeStore();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: sendReview, 
+    onSuccess: (data) => {
+      // When API responds, update Zustand store
+      setAnalysis(data.issues, data.refactoredCode);
+    },
   });
 
-  const [code, setCode] = useState(`function calculateTotal(items) {
-    var total = 0;
-    for (var i = 0; i < items.length; i++) {
-      total += items[i].price * items[i].quantity;
-    }
-    return total;
-  }`);
-
+  // Trigger analysis if code is not empty
   const handleAnalyze = () => {
     if (code.trim()) {
       mutate({ code, language: "javascript" });
     }
   };
-  
 
   return (
     <div className="flex gap-6">
-      {/* Code Editor */}
+      {/* Left Panel = Code Editor */}
       <div className="w-[45vw] h-[90vh] border-2 border-black rounded-md">
+        {/* Header bar */}
         <div className="pb-2 border-b-2 border-black bg-[#2a2a2b] rounded-t-lg">
           <div className="flex justify-between items-center text-[#fbc40d] p-4 pt-6">
             <div className="flex items-center gap-2 text-[#fbc40d]">
@@ -37,17 +38,20 @@ const CodeEditor = () => {
               <h2 className="text-lg font-semibold">Code Editor</h2>
             </div>
 
+            {/* Analyze button */}
             <Button
               onClick={handleAnalyze}
-              disabled={isPending || !code.trim()}
-              className="px-6 py-2 border-2 border-black bg-[#fbc40d] text-[#2a2a2b] hover:bg-[#fbc40d]/80"
+              disabled={isPending || !code.trim()} // disable while analyzing or if no code
+              className="px-6 py-2 border-2 border-black bg-[#fbc40d] text-[#2a2a2b] cursor-pointer hover:bg-[#fbc40d]/80"
             >
               {isPending ? (
+                // Loading spinner while analyzing
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
                   Analyzing...
                 </>
               ) : (
+                // Normal state
                 <>
                   <Zap className="h-4 w-4" />
                   Analyze Code
@@ -57,26 +61,21 @@ const CodeEditor = () => {
           </div>
         </div>
 
+        {/* Monaco Editor */}
         <div className="w-full overflow-hidden h-[calc(100%-80px)] bg-[#beb6b7] border-b-2 border-black p-4">
           <Editor
             className="h-full w-full font-mono text-sm resize-none border-2 border-black bg-white text-[#2a2a2b] p-3 rounded-md"
             height="100%"
             width="100%"
             defaultLanguage="javascript"
-            value={code}
-            onChange={(value) => setCode(value || "")}
-            theme=""
+            value={code} // bind to Zustand
+            onChange={(value) => setCode(value || "")} // update Zustand
           />
         </div>
       </div>
 
-      {/* ✅ FIX: Show AnalysisResults always */}
-      {/* - If API data exists → show analysis */}
-      {/* - If no data → AnalysisResults will show its own "No analysis yet" placeholder */}
-      <AnalysisResults
-        issues={data?.issues}
-        refactoredCode={data?.refactoredCode}
-      />
+      {/* Right Panel = Analysis Results */}
+      <AnalysisResults />
     </div>
   );
 };

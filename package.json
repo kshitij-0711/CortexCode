@@ -1,5 +1,5 @@
 {
-  "name": "aiCodeEditor",
+  "name": "CortexCode",
   "private": true,
   "scripts": {
     "build": "turbo run build",
