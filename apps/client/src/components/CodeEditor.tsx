@@ -1,4 +1,3 @@
-// CodeEditor.tsx
 import Editor from "@monaco-editor/react"; 
 import { Button } from "./ui/button"; 
 import { Code, Zap } from "lucide-react"; 

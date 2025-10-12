@@ -28,13 +28,14 @@ interface BackendResponse {
   refactoredCode: string; // Direct access
   raw: string;
 }
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const sendReview = async (
   payload: ReviewRequest
 ): Promise<ReviewResponse> => {
   try {
     const { data }: AxiosResponse<BackendResponse> = await axios.post(
-      "http://localhost:3000/api/review",
+      `${API_BASE_URL}/api/review`,
       payload,
       { withCredentials: true }
     );
