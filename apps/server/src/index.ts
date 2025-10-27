@@ -13,24 +13,14 @@ mongoose
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",                // local dev frontend
-  "https://cortex-code-client.vercel.app" // production frontend
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn("🚫 Blocked CORS for origin:", origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173", // local dev frontend
+      "https://cortex-code-client.vercel.app", // production frontend
+    ],
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());

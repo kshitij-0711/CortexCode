@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
-
 interface DecodedToken extends JwtPayload {
   id: string;
 }
@@ -12,9 +11,6 @@ export const userMiddleware = (
   next: NextFunction,
 ): void => {
   try {
-    console.log("userMiddleware called");
-    console.log("All cookies:", req.cookies);
-
     // Look specifically for YOUR token cookie (not authjs)
     const token = req.cookies.token || req.cookies["authjs.session-token"];
 
@@ -31,10 +27,7 @@ export const userMiddleware = (
       return;
     }
 
-    console.log("Token found:", token.substring(0, 20) + "...");
-
     const decoded = jwt.verify(token, config.JWT_PASSWORD) as DecodedToken;
-    console.log("Token verified, user ID:", decoded.id);
 
     req.user = { id: decoded.id };
     next();

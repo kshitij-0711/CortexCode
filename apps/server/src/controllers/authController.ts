@@ -44,7 +44,8 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
 
 export const login = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { email, password } = req.body;
+
+    const { email, password } = await loginSchema.parseAsync(req.body);
 
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
@@ -60,10 +61,24 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       sameSite: "lax",
     });
 
-    return res.json({ message: "Login successful" });
+    //Return token and user data
+    return res.json({ 
+      message: "Login successful",
+      token: jwtToken,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      }
+    });
   } catch (error) {
+    // Better error handling for Zod validation
     if (error instanceof Error && "issues" in error) {
-      return res.status(400).json({ message: "Validation failed", errors: error });
+      console.error("Validation error:", error);
+      return res.status(400).json({ 
+        message: "Validation failed", 
+        errors: (error as any).issues 
+      });
     }
 
     console.error("Login error:", error);
