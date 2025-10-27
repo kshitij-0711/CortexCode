@@ -19,7 +19,7 @@ const Login = () => {
       console.log("📤 Sending login request with:", { email, password: "***" });
       
       const res = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://cortex-code-server.vercel.app/api/auth/login",
         { email, password },
         { withCredentials: true },
       );

@@ -19,7 +19,7 @@ const Signup = () => {
     // This function is triggered when mutation.mutate() is called
     mutationFn: async () => {
       // Send signup request to backend using axios
-      const res = await axios.post('http://localhost:3000/api/auth/signup', { email, password, username },{ withCredentials: true, });
+      const res = await axios.post('https://cortex-code-server.vercel.app/api/auth/signup', { email, password, username },{ withCredentials: true, });
       return res.data;// Return the response data (user object)
     },
 
