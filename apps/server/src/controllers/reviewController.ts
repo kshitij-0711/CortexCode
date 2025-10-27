@@ -20,7 +20,7 @@ interface ParsedReview {
   refactoredCode: string;
 }
 
-export const      sendReviewCode = async (
+export const sendReviewCode = async (
   req: Request,
   res: Response,
 ): Promise<Response> => {

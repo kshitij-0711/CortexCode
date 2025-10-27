@@ -12,6 +12,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 const app = express();
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -24,7 +25,6 @@ app.use(
 );
 
 app.use(express.json());
-app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRouter);

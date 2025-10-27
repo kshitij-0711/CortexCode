@@ -7,7 +7,9 @@ import { signupSchema, loginSchema } from "../schemas/authSchemas";
 
 export const signup = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { username, email, password } = await signupSchema.parseAsync(req.body);
+    const { username, email, password } = await signupSchema.parseAsync(
+      req.body,
+    );
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -34,7 +36,9 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
     });
   } catch (error) {
     if (error instanceof Error && "issues" in error) {
-      return res.status(400).json({ message: "Validation failed", errors: error });
+      return res
+        .status(400)
+        .json({ message: "Validation failed", errors: error });
     }
 
     console.error("Signup error:", error);
@@ -44,40 +48,43 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
 
 export const login = async (req: Request, res: Response): Promise<any> => {
   try {
-
     const { email, password } = await loginSchema.parseAsync(req.body);
 
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isPasswordValid)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const jwtToken = jwt.sign({ id: user._id }, config.JWT_PASSWORD, { expiresIn: "7d" });
+    const jwtToken = jwt.sign({ id: user._id }, config.JWT_PASSWORD, {
+      expiresIn: "7d",
+    });
 
     res.cookie("token", jwtToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: true, // ✅ Always true for HTTPS (Vercel)
+      sameSite: "none", // ✅ Required for cross-domain cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     //Return token and user data
-    return res.json({ 
+    return res.json({
       message: "Login successful",
       token: jwtToken,
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
-      }
+      },
     });
   } catch (error) {
     // Better error handling for Zod validation
     if (error instanceof Error && "issues" in error) {
       console.error("Validation error:", error);
-      return res.status(400).json({ 
-        message: "Validation failed", 
-        errors: (error as any).issues 
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: (error as any).issues,
       });
     }
 

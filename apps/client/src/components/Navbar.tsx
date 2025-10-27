@@ -12,7 +12,7 @@ const Navbar = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/logout",
+        "https://cortex-code-server.vercel.app/api/auth/logout",
         {email},
         {withCredentials: true}
       );
