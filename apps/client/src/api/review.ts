@@ -28,7 +28,7 @@ interface BackendResponse {
   refactoredCode: string; // Direct access
   raw: string;
 }
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://cortex-code-server.vercel.app/";
 
 export const sendReview = async (
   payload: ReviewRequest
