@@ -28,7 +28,9 @@ interface BackendResponse {
   refactoredCode: string; // Direct access
   raw: string;
 }
+
 const API_BASE_URL = "https://cortex-code-server.vercel.app";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 export const sendReview = async (
   payload: ReviewRequest
@@ -37,7 +39,12 @@ export const sendReview = async (
     const { data }: AxiosResponse<BackendResponse> = await axios.post(
       `${API_BASE_URL}/api/review`,
       payload,
-      { withCredentials: true }
+      { 
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`
+        }
+      }
     );
 
     console.log("📨 Backend response:", data);
