@@ -7,14 +7,14 @@ import axios from "axios";
 const Navbar = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const {email} = useLoginFormStore();
+  const { email } = useLoginFormStore();
 
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await axios.post(
         "https://cortex-code-server.vercel.app/api/auth/logout",
-        {email},
-        {withCredentials: true}
+        { email },
+        { withCredentials: true },
       );
       return res.data;
     },
@@ -25,8 +25,8 @@ const Navbar = () => {
     },
     onError: (err) => {
       console.log("Logout Failed:", err);
-    }
-  })
+    },
+  });
 
   const navigateLogin = () => {
     navigate("/login");
@@ -34,9 +34,9 @@ const Navbar = () => {
   const navigateSignUp = () => {
     navigate("/signup");
   };
-  const clearToken = () =>{
+  const clearToken = () => {
     mutation.mutate();
-  }
+  };
 
   return (
     <header className="border-b border-slate-800 bg-slate-900/50">
@@ -49,9 +49,10 @@ const Navbar = () => {
         {/* Right side: Buttons (only if token exists) */}
         {token ? (
           <div>
-            <Button 
-            onClick={clearToken}
-            className="px-6 py-2 border-2 border-black bg-[#2a2a2b] text-white hover:bg-[#2a2a2b]/90">
+            <Button
+              onClick={clearToken}
+              className="px-6 py-2 border-2 border-black bg-[#2a2a2b] text-white hover:bg-[#2a2a2b]/90"
+            >
               Log Out
             </Button>
           </div>

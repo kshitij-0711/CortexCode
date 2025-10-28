@@ -30,19 +30,21 @@ interface BackendResponse {
 }
 
 const API_BASE_URL = "https://cortex-code-server.vercel.app";
-const API_KEY = import.meta.env.VITE_API_KEY;
 
 export const sendReview = async (
   payload: ReviewRequest
 ): Promise<ReviewResponse> => {
   try {
+    // Get JWT token from localStorage (assuming user is logged in)
+    const token = localStorage.getItem('token');
+    
     const { data }: AxiosResponse<BackendResponse> = await axios.post(
       `${API_BASE_URL}/api/review`,
       payload,
       { 
         withCredentials: true,
         headers: {
-          'Authorization': `Bearer ${API_KEY}`
+          'Authorization': `Bearer ${token}`
         }
       }
     );
