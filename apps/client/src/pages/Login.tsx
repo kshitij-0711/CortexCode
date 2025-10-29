@@ -3,6 +3,7 @@ import { useLoginFormStore } from "../store/loginStore";
 import { useUserStore } from "../store/userStore";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import config from "../config/api";
 
 const inputClasses =
   "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 m-2";
@@ -19,7 +20,7 @@ const Login = () => {
       console.log("📤 Sending login request with:", { email, password: "***" });
       
       const res = await axios.post(
-        "https://cortex-code-server.vercel.app/api/auth/login",
+        `${config.API_URL}/auth/login`,
         { email, password },
         { withCredentials: true },
       );
@@ -123,6 +124,8 @@ const Login = () => {
       </div>
     </div>
   );
+
+
 };
 
 export default Login;

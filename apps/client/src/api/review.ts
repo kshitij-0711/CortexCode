@@ -1,5 +1,6 @@
 import axios from "axios"; 
 import type { AxiosResponse } from 'axios';
+import config from '../config/api';
 
 interface ReviewRequest {
   code: string;
@@ -29,8 +30,6 @@ interface BackendResponse {
   raw: string;
 }
 
-const API_BASE_URL = "https://cortex-code-server.vercel.app";
-
 export const sendReview = async (
   payload: ReviewRequest
 ): Promise<ReviewResponse> => {
@@ -39,7 +38,7 @@ export const sendReview = async (
     const token = localStorage.getItem('token');
     
     const { data }: AxiosResponse<BackendResponse> = await axios.post(
-      `${API_BASE_URL}/api/review`,
+      `${config.API_URL}/review`,
       payload,
       { 
         withCredentials: true,

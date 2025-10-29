@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useLoginFormStore } from "@/store/loginStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import config from "../config/api";
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
@@ -12,7 +13,7 @@ const Navbar = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await axios.post(
-        "https://cortex-code-server.vercel.app/api/auth/logout",
+        `${config.API_URL}/auth/logout`,
         { email },
         { withCredentials: true },
       );

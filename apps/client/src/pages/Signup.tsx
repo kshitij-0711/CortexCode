@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useSignupFormStore } from '../store/signupStore' 
 import { useUserStore } from '../store/userStore'
 import { useNavigate } from 'react-router-dom'
+import config from '../config/api'
 
 const inputClasses =
   'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 m-2'
@@ -19,7 +20,7 @@ const Signup = () => {
     // This function is triggered when mutation.mutate() is called
     mutationFn: async () => {
       // Send signup request to backend using axios
-      const res = await axios.post('https://cortex-code-server.vercel.app/api/auth/signup', { email, password, username },{ withCredentials: true, });
+      const res = await axios.post(`${config.API_URL}/auth/signup`, { email, password, username },{ withCredentials: true, });
       return res.data;// Return the response data (user object)
     },
 

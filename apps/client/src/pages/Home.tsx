@@ -1,6 +1,7 @@
 // import AnalysisResults from "@/components/AnalysisResults";
 // import CodeEditor from "@/components/CodeEditor";
 
+
 // const Home = () => {
 //   return (
 //     <div className="flex gap-4 py-4">
@@ -16,20 +17,33 @@
 
 // export default Home;
 
+// Home.jsx
+
 import CodeEditor from "@/components/CodeEditor";
-// ❌ Remove this import — it was causing duplicate render
-// import AnalysisResults from "@/components/AnalysisResults";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Home = () => {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
   return (
     <div className="flex gap-4 py-4">
-      <div className="shadow-xl ">
-        <CodeEditor />
-      </div>
+      {token ? (
+        <div className="shadow-xl">
+          <CodeEditor />
+        </div>
+      ) : (
+        <div>Redirecting...</div>
+      )}
     </div>
   );
 };
 
 export default Home;
-
-
