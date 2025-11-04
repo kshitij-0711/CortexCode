@@ -4,6 +4,7 @@ import { useUserStore } from "../store/userStore";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import config from "../config/api";
+import { Button } from "@/components/ui/button";
 
 const inputClasses =
   "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 m-2";
@@ -18,7 +19,7 @@ const Login = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       console.log("📤 Sending login request with:", { email, password: "***" });
-      
+
       const res = await axios.post(
         `${config.API_URL}/auth/login`,
         { email, password },
@@ -29,7 +30,7 @@ const Login = () => {
 
     onSuccess: (data) => {
       console.log("✅ Login successful:", data);
-      
+
       const { token, user } = data;
 
       if (token) {
@@ -46,11 +47,14 @@ const Login = () => {
 
     onError: (err) => {
       console.error("❌ Login Failed:", err);
-      
+
       if (axios.isAxiosError(err)) {
         console.error("Backend Error Response:", err.response?.data);
         console.error("Status Code:", err.response?.status);
-        console.error("Request Data:", { email, password: password ? "***" : "empty" });
+        console.error("Request Data:", {
+          email,
+          password: password ? "***" : "empty",
+        });
       }
     },
   });
@@ -104,14 +108,15 @@ const Login = () => {
           value={password}
           onChange={(e) => setField("password", e.target.value)}
         />
-        <button
-          type="button"
+        
+        <Button
+          type="submit"
           onClick={handleSubmit}
-          className="bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm p-2 m-2 w-full"
+          className="w-full bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm p-2 m-2 h-11 font-semibold"
           disabled={mutation.isPending}
         >
           {mutation.isPending ? "Logging In..." : "Login"}
-        </button>
+        </Button>
 
         {mutation.isError && (
           <p className="text-red-500 text-sm mt-2">
@@ -124,8 +129,6 @@ const Login = () => {
       </div>
     </div>
   );
-
-
 };
 
 export default Login;
