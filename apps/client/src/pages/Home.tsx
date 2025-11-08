@@ -29,7 +29,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate("/login");
+      navigate("/auth");
     }
   }, [token, navigate]);
 

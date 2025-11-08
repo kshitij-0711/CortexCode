@@ -30,7 +30,7 @@ const Signup = () => {
       setUser(data);
       // Clear the signup form
       clearForm();
-      navigate('/login');
+      navigate('/');
     },
 
     // Called if mutation fails
