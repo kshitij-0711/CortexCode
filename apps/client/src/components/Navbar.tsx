@@ -55,7 +55,7 @@ const Navbar = () => {
     //     )}
     //   </div>
     // </header>
-    <header className="border-b border-[#1e293b99] bg-[#11182780] backdrop-blur-xl sticky top-0 z-50">
+    <header className="border-b border-[#1e293b99] bg-[#0f1521] backdrop-blur-xl sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Left side: logo and title */}
         <div className="flex items-center gap-4">
