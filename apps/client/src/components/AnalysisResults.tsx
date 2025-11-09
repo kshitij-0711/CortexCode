@@ -1,11 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import {
   Sparkles,
-  Loader2,
   AlertTriangle,
   Lightbulb,
   CheckCircle2,

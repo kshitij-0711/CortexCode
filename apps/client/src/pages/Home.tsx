@@ -1,5 +1,4 @@
 import CodeEditor from "@/components/CodeEditor";
-import Navbar from "@/components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
